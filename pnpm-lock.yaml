@@ -11,12 +11,12 @@ dependencies:
   three:
     specifier: ^0.157.0
     version: 0.157.0
-  voby:
+  woby:
     specifier: workspace:../woby
     version: link:../woby
-  voby-three:
-    specifier: ../voby-three
-    version: link:../voby-three
+  woby-three:
+    specifier: ../woby-three
+    version: link:../woby-three
 
 devDependencies:
   '@rollup/plugin-alias':

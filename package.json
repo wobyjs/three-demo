@@ -1,7 +1,7 @@
 {
-  "name": "voby-three-demo",
+  "name": "woby-three-demo",
   "version": "1.0.0",
-  "description": "Demo scripts for voby-three",
+  "description": "Demo scripts for woby-three",
   "main": "./dist/Appbar.es.js",
   "module": "./dist/Appbar.es.js",
   "types": "./dist/types/Appbar.d.ts",
@@ -18,22 +18,22 @@
   "keywords": [
     "jasmine",
     "mock",
-    "voby"
+    "woby"
   ],
   "author": "Tan Jee Han",
   "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-alias": "^5.0.0",
     "autoprefixer": "^10.4.15",
-    "vite": "^4.3.3",
-    "vite-plugin-dts": "^2.3.0"
+    "vite": "^5.2.11",
+    "vite-plugin-dts": "^3.9.1"
   },
   "peerDependencies": {
-    "voby": "workspace:../woby",
-    "voby-three": "../voby-three"
+    "woby": "workspace:../woby",
+    "woby-three": "../woby-three"
   },
   "dependencies": {
-    "@types/three": "^0.156.0",
-    "three": "^0.157.0"
+    "@types/three": "^0.164.0",
+    "three": "^0.164.1"
   }
 }

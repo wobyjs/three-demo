@@ -1,62 +1,31 @@
-import { $, $$, useEffect, useMemo, useContext } from "voby"
-import { useFrame, useThree, render, orbitControls, Canvas3D, Button, threeContext } from "voby-three"
+/** @jsxImportSource woby */
+
+import { $, $$, useEffect, useMemo, useContext, type JSX } from "woby"
+import { useFrame, useThree, render, orbitControls, Canvas3D, Button, threeContext, MeshProps } from "woby-three"
 import { Mesh, MeshBasicMaterial, TextureLoader } from "three"
 
-const Box = (props) => {
-    // This reference gives us direct access to the THREE.Mesh object
-    const ref = $<Mesh>()
-    const texture = new TextureLoader().load('../textures/usedSteel.png');
-    // Hold state for hovered and clicked events
-    const hovered = $(false)
-    const clicked = $(false)
-
-    // Subscribe this component to the render-loop, rotate the mesh every frame
-
-    useFrame(() =>
-        (ref()?.rotateX(0.03))
-    )
-
-    useEffect(() => {
-        console.log(ref())
-    })
-
-    // Return the view, these are regular Threejs elements expressed in JSX
-    return (
-        <mesh
-            {...props}
-            ref={ref}
-            scale={() => $$(clicked) ? [1.5, 1.5, 1.5] : [1, 1, 1]}
-            // onClick={(event) => clicked(!clicked())}
-            onPointerOver={(event) => hovered(true)}
-            onPointerOut={(event) => hovered(false)}>
-            <boxGeometry args={[1, 1, 1]} />
-            <meshStandardMaterial color={() => $$(hovered) ? 'hotpink' : 'orange'} map={texture} />
-        </mesh>
-    )
-}
+import { Page1 } from "./page1"
+import { Page2 } from "./page2"
+import { Page3 } from "./page3"
+import { Page4 } from "./page4"
+import { Page5 } from "./page5"
+import { FatLines } from "./FatLines"
+import { Line } from "./Line"
 
 export const App = () => {
-    const visible = $(false)
-    const box = <Box position={[0, 1, 0]} />
-    const ambientRef = $()
-    const spotRef = $()
-    const angle = $(10)
+    const page = $()
+    return <div>
+        <button onClick={() => page(Page1)}>3 Boxes + Click</button>
+        <button onClick={() => page(Page2)}>Box + static text</button>
+        <button onClick={() => page(Page3)}>GLTF</button>
+        <button onClick={() => page(Page4)}>Boxesx  + Click</button>
+        <button onClick={() => page(Page5)}>Box text rotate</button>
+        <button onClick={() => page(FatLines)}>FatLines WebGL</button>
+        <button onClick={() => page(Line)}>Line</button>
+        
 
-    useEffect(() => {
-        console.log(ambientRef())
-        // console.log(spotRef(), angle())
-    })
-    return (
-        <canvas3D>
-            <ambientLight intensity={1} ref={ambientRef} />
-            <spotLight position={[0, 1, 0]} angle={10} penumbra={1} ref={spotRef} />
-            <pointLight position={[0, 1, 0]} />
-            <orbitControls enableDamping />
-            <Box position={[-1.2, 0, 0]} onClick={() => { visible(!visible()); console.log(visible()) }} />
-            {/* <Box position={[0, 1, 0]} visible={() => $$(visible) ? true : false} /> */}
-            {() => $$(visible) ? box: null}
-            <Box position={[1.2, 0, 0]} />
-        </canvas3D>
-    )
+        {page}
+    </div>
 }
+
 render(App, document.body)
