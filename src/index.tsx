@@ -1,62 +1,34 @@
-import { $, $$, useEffect, useMemo, useContext } from "voby"
-import { useFrame, useThree, render, orbitControls, Canvas3D, Button, threeContext } from "voby-three"
-import { Mesh, MeshBasicMaterial, TextureLoader } from "three"
+///<reference types='woby' />
+/** @jsxImportSource woby */
 
-const Box = (props) => {
-    // This reference gives us direct access to the THREE.Mesh object
-    const ref = $<Mesh>()
-    const texture = new TextureLoader().load('../textures/usedSteel.png');
-    // Hold state for hovered and clicked events
-    const hovered = $(false)
-    const clicked = $(false)
+import { $, $$, useEffect, useMemo, useContext, type JSX, render } from 'woby'
 
-    // Subscribe this component to the render-loop, rotate the mesh every frame
-
-    useFrame(() =>
-        (ref()?.rotateX(0.03))
-    )
-
-    useEffect(() => {
-        console.log(ref())
-    })
-
-    // Return the view, these are regular Threejs elements expressed in JSX
-    return (
-        <mesh
-            {...props}
-            ref={ref}
-            scale={() => $$(clicked) ? [1.5, 1.5, 1.5] : [1, 1, 1]}
-            // onClick={(event) => clicked(!clicked())}
-            onPointerOver={(event) => hovered(true)}
-            onPointerOut={(event) => hovered(false)}>
-            <boxGeometry args={[1, 1, 1]} />
-            <meshStandardMaterial color={() => $$(hovered) ? 'hotpink' : 'orange'} map={texture} />
-        </mesh>
-    )
-}
+import { Box3 } from './Box3'
+import { BoxStaticText } from './BoxStaticText'
+import { GLTF } from './GLTF'
+import { Box2Click } from './Box2Click'
+import { BoxHtmlText } from './BoxHtmlText'
+import { SimpleLine } from './SimpleLine'
+import {FatLines} from './FatLines'
+// import { Line } from './Line'
+import { DLines } from './DLine'
 
 export const App = () => {
-    const visible = $(false)
-    const box = <Box position={[0, 1, 0]} />
-    const ambientRef = $()
-    const spotRef = $()
-    const angle = $(10)
+    const page = $()
+    return <div class='z-10'>
+        <button onClick={() => page(Box3)}>3 Boxes + Click</button>
+        <button onClick={() => page(BoxStaticText)}>Box + static text</button>
+        <button onClick={() => page(GLTF)}>GLTF</button>
+        <button onClick={() => page(Box2Click)}>Boxes + Click</button>
+        <button onClick={() => page(BoxHtmlText)}>Box text rotate</button>
+        <button onClick={() => page(FatLines)}>Fat Line</button>
+        <button onClick={() => page(SimpleLine)}>Simple Line</button>
+        <button onClick={() => page(DLines)}>DLines</button>
+        {/* <button onClick={() => page(Line)}>Line</button> */}
+        
 
-    useEffect(() => {
-        console.log(ambientRef())
-        // console.log(spotRef(), angle())
-    })
-    return (
-        <canvas3D>
-            <ambientLight intensity={1} ref={ambientRef} />
-            <spotLight position={[0, 1, 0]} angle={10} penumbra={1} ref={spotRef} />
-            <pointLight position={[0, 1, 0]} />
-            <orbitControls enableDamping />
-            <Box position={[-1.2, 0, 0]} onClick={() => { visible(!visible()); console.log(visible()) }} />
-            {/* <Box position={[0, 1, 0]} visible={() => $$(visible) ? true : false} /> */}
-            {() => $$(visible) ? box: null}
-            <Box position={[1.2, 0, 0]} />
-        </canvas3D>
-    )
+        {page}
+    </div>
 }
+
 render(App, document.body)

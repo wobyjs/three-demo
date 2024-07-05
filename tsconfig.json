@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "allowJs": false,
+        "allowJs": true,
         "allowSyntheticDefaultImports": true,
         "allowUnreachableCode": false,
         "allowUnusedLabels": false,
@@ -13,13 +13,13 @@
         "inlineSources": false,
         // "isolatedModules": true,
         "jsx": "preserve",
-        "jsxImportSource": "voby-three",
+        "jsxImportSource": "woby",
         "lib": [
             "dom",
             "esnext"
         ],
-        "module": "es2020",
-        "moduleResolution": "node",
+        "module": "ES2022",
+        "moduleResolution": "Node",
         "newLine": "lf",
         "noEmitOnError": false,
         "noFallthroughCasesInSwitch": true,
@@ -27,7 +27,7 @@
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noPropertyAccessFromIndexSignature": false,
-        "noUnusedLocals": true,
+        "noUnusedLocals": false,
         "noUnusedParameters": false,
         "outDir": "./dist/",
         "pretty": true,
@@ -41,32 +41,43 @@
         "target": "es2020",
         "useDefineForClassFields": false,
         "useUnknownInCatchVariables": true,
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "noUncheckedIndexedAccess": false,
         "baseUrl": ".",
         "rootDir": "./",
         "composite": true,
-        // "paths": {
-        //     "voby/jsx-runtime": [
-        //         "../../../voby/dist/jsx"
-        //     ],
-        //     "voby/jsx-runtime/*": [
-        //         "../../../voby/dist/jsx/*"
-        //     ],
-        // }
-    },
-    "references": [
-        {
-            "path": "../woby"
+        "paths": {
+            "woby/*": [
+                "./node_modules/woby/*"
+            ],
+            "woby/jsx-runtime": [
+                "./node_modules/woby/dist/types/jsx/runtime"
+            ],
+            "woby/jsx-runtime/*": [
+                "./node_modules/woby/dist/types/jsx/runtime/*"
+            ],
+            "woby-three/jsx-runtime": [
+                "./node_modules/woby-three/dist/jsx-runtime"
+            ],
+            "woby-three/jsx-runtime/*": [
+                "./node_modules/woby-three/dist/jsx-runtime*"
+            ],
         }
-    ],
+    },
+    // "references": [
+    //     {
+    //         "path": "../woby"
+    //     }
+    // ],
     "exclude": [
         "node_modules/*",
         "*.test.ts*",
-        "vite.config.ts",
-        "vite.config.*.ts",
+        "vite.config.*ts",
+        "vite.config.*.*ts",
+        "dist",
+        "src1"
     ]
     // "include": [
-    //   "../voby/src/jsx"
+    //   "../woby/src/jsx"
     // ]
 }
