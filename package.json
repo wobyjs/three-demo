@@ -40,7 +40,8 @@
     "dev": "run-p css:watch dev:only",
     "build:vite": "vite build",
     "build:watch": "vite build --watch",
-    "preview": "vite preview --host"
+    "preview": "vite preview --host",
+    "hosting": "firebase deploy --only hosting"
   },
   "repository": {
     "type": "git",
@@ -65,8 +66,8 @@
     "woby-three": "../woby-three"
   },
   "dependencies": {
-    "@types/three": "^0.165.0",
-    "three": "^0.165.0",
+    "@types/three": "^0.166.0",
+    "three": "^0.166.1",
     "woby": "workspace:../woby"
   }
 }

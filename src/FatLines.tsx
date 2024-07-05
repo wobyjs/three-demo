@@ -1,7 +1,7 @@
 /** @jsxImportSource woby-three */
 
 import * as three from 'three'
-import { Three, consParams, objParams, defaults, LineProps, useThree, useFrame, useRenderer } from "woby-three"
+import { Three, consParams, objParams, defaults, LineProps, useThree, useFrame, useRenderer, useCamera } from "woby-three"
 import { $, $$, useEffect, } from "woby"
 import * as GeometryUtils from 'three/examples/jsm/utils/GeometryUtils'
 import { Line2 } from 'three/examples/jsm/lines/Line2' //'three/addons/lines/Line2.js';
@@ -38,7 +38,8 @@ declare global {
 }
 
 const Panel = () => {
-    const { scene, camera } = useThree()
+    const { scene } = useThree()
+    const camera = useCamera<three.PerspectiveCamera>()
     const renderer = useRenderer<three.WebGLRenderer>()
 
     // $$(renderer).setPixelRatio(window.devicePixelRatio)
@@ -66,7 +67,7 @@ const Panel = () => {
         stats.showPanel(0)
 
         function onWindowResize() {
-            ($$(camera) as three.PerspectiveCamera).aspect = window.innerWidth / window.innerHeight;
+            $$(camera).aspect = window.innerWidth / window.innerHeight;
             $$(camera).updateProjectionMatrix();
 
             r.setSize(window.innerWidth, window.innerHeight);
@@ -96,7 +97,7 @@ const Panel = () => {
         r.setViewport(0, 0, window.innerWidth, window.innerHeight)
 
         gpuPanel?.startQuery()
-        r.render($$(scene) as any, $$(camera) as Camera)
+        r.render($$(scene), $$(camera))
         gpuPanel?.endQuery()
 
         r.setClearColor(0x222222, 1)
@@ -249,7 +250,6 @@ export const FatLines = () => {
 
     // useEffect(()=>{
     //     if(!$$(l2))return
-
     //     $$(l2).computeLineDistances()
     // })
 
@@ -257,8 +257,8 @@ export const FatLines = () => {
     // renderer={new three.WebGLRenderer({ antialias: true })}
     >
         <gui ref={g} />
-        {/* <webGLRenderer antialias setPixelRatio={[window.devicePixelRatio]} setSize={[window.innerWidth, window.innerHeight]} setClearColor={[0x000000, 0.0]} /> */}
-        {/* <perspectiveCamera fov={40} aspect={window.innerWidth / window.innerHeight} near={1} far={1000} position={[-40, 0, 60]} /> */}
+        <webGLRenderer antialias setPixelRatio={[window.devicePixelRatio]} setSize={[window.innerWidth, window.innerHeight]} setClearColor={[0x000000, 0.0]} />
+        <perspectiveCamera fov={40} aspect={window.innerWidth / window.innerHeight} near={1} far={1000} position={[-40, 0, 60]} />
         <Panel />
         <ambientLight intensity={0.5} />
         <orbitControls minDistance={10} maxDistance={500} enableDamping />
