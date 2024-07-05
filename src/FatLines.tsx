@@ -95,7 +95,7 @@ const Panel = () => {
         r.setViewport(0, 0, window.innerWidth, window.innerHeight)
 
         gpuPanel?.startQuery()
-        r.render($$(scene), $$(camera))
+        r.render($$(scene) as any, $$(camera))
         gpuPanel?.endQuery()
 
         r.setClearColor(0x222222, 1)
@@ -111,7 +111,7 @@ const Panel = () => {
         camera2.position.copy($$(camera).position)
         camera2.quaternion.copy($$(camera).quaternion)
 
-        r.render($$(scene), camera2)
+        r.render($$(scene) as any, camera2)
 
         r.setScissorTest(false)
 
