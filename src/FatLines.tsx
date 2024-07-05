@@ -12,6 +12,7 @@ import Stats from 'three/examples/jsm//libs/stats.module';
 import { GPUStatsPanel } from 'three/examples/jsm/utils/GPUStatsPanel';
 
 import { Line } from 'three'
+import { Camera } from 'three'
 
 //https://threejs.org/examples/?q=line#webgl_lines_fat
 
@@ -95,7 +96,7 @@ const Panel = () => {
         r.setViewport(0, 0, window.innerWidth, window.innerHeight)
 
         gpuPanel?.startQuery()
-        r.render($$(scene) as any, $$(camera))
+        r.render($$(scene) as any, $$(camera) as Camera)
         gpuPanel?.endQuery()
 
         r.setClearColor(0x222222, 1)

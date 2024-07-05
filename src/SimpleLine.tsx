@@ -47,8 +47,7 @@ const Test = () => {
     }
 
     return <mesh material={material} >
-        {/** @ts-ignore */}
-        <textGeometry str={"abc"} parameters={parameters} />
+        <textGeometry text={"abc"} parameters={parameters} />
     </mesh>
 }
 export const SimpleLine = () => {
