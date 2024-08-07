@@ -1,11 +1,24 @@
+/** @jsxImportSource woby-three */
 
-
-import { $, $$, useEffect, useMemo } from "woby"
-import { useFrame, useThree, render, MeshProps } from "woby-three"
-import { BackSide, BoxGeometry, CameraHelper, Color, DoubleSide, Mesh, MeshPhongMaterial, TextureLoader } from "three"
+import { $, $$, useEffect } from "woby"
+// import { useFrame, useThree, render, useScene, useCamera, useRenderer, Canvas3D } from "woby-three"
 import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer'
-// import { WireframeGeometry2 } from 'three/examples/jsm/lines/WireframeGeometry2'
-// import { Wireframe } from 'three/examples/jsm/lines/Wireframe'
+import { Mesh, MeshProps, } from 'woby-three/src/objects/Mesh'
+import 'woby-three/examples/jsm/lines/Wireframe'
+import 'woby-three/examples/jsm/lines/WireframeGeometry2'
+import 'woby-three/src/geometries/IcosahedronGeometry'
+import { OrbitControls } from "woby-three/lib/examples/jsm/controls/OrbitControls"
+import { TextureLoader } from "woby-three/src/loaders/TextureLoader"
+import { useFrame } from "woby-three/lib/hooks/useFrame"
+import { useRenderer } from "woby-three/lib/hooks/useRenderer"
+import { WebGLRenderer } from "woby-three/src/renderers/WebGLRenderer"
+import { useScene } from "woby-three/lib/hooks/useScene"
+import { useCamera } from "woby-three/lib/hooks/useCamera"
+import { Color } from "woby-three/src/math/Color"
+import { BoxGeometry } from "woby-three/src/geometries/BoxGeometry"
+import { MeshPhongMaterial } from "woby-three/src/materials/MeshPhongMaterial"
+import { BackSide } from "woby-three/src/constants"
+import { Canvas3D } from "woby-three/lib/components/Canvas3D"
 
 
 function Box(props: MeshProps) {
@@ -18,9 +31,9 @@ function Box(props: MeshProps) {
     // Subscribe this component to the render-loop, rotate the mesh every frame
     useFrame(() => $$(ref)?.rotateX(0.01))
 
-    const scene = useThree("scene")
-    const renderer = useThree("renderer")
-    const camera = useThree("camera")
+    const scene = useScene()
+    const renderer = useRenderer<WebGLRenderer>()
+    const camera = useCamera()
 
     $$(renderer).shadowMap.enabled = true
     $$(scene).background = new Color("grey")
@@ -81,20 +94,20 @@ function Box(props: MeshProps) {
     })
 
     // Return the view, these are regular Threejs elements expressed in JSX
-    return         <wireframe
-            // {...props}
-            ref={ref}
+    return <wireframe
+        // {...props}
+        ref={ref}
 
-            scale={() => $$(clicked) ? [1.5, 1.5, 1.5] : [1, 1, 1]}>
-            <wireframeGeometry2>
-                <icosahedronGeometry args={[20, 1]} />
-            </wireframeGeometry2>
-            <lineMaterial color='0x4080ff' linewidth={5} dashed={false} />
+        scale={() => $$(clicked) ? [1.5, 1.5, 1.5] : [1, 1, 1]}>
+        <wireframeGeometry2>
+            <icosahedronGeometry args={[20, 1]} />
+        </wireframeGeometry2>
+        <lineMaterial color='0x4080ff' linewidth={5} dashed={false} />
 
-            {/* <boxGeometry args={[1, 1, 1]} /> */}
-            {/* <meshStandardMaterial color={() => $$(hovered) ? 'hotpink' : 'orange'} map={texture} side={DoubleSide} /> */}
+        {/* <boxGeometry args={[1, 1, 1]} /> */}
+        {/* <meshStandardMaterial color={() => $$(hovered) ? 'hotpink' : 'orange'} map={texture} side={DoubleSide} /> */}
 
-        </wireframe>
+    </wireframe>
 }
 
 export function Line() {
@@ -107,7 +120,7 @@ export function Line() {
         side: BackSide,
     })
 
-    return <canvas3D>
+    return <Canvas3D>
         <ambientLight intensity={0.5} />
         <spotLight position={[0, 0, 0]} angle={0.15} penumbra={1} />
         <pointLight position={[0, 5, 0]} intensity={10} castShadow shadow-camera-far={333} shadow-camera-near={0.1} />
@@ -116,6 +129,6 @@ export function Line() {
         {/* <Box position={[-2, 0.8, 0]} castShadow /> */}
         {/* <mesh geometry={cubeGeo} material={cubeMat} position={[0, cubeSize / 2 - 0.1, 0]} receiveShadow /> */}
 
-        <orbitControls enableDamping />
-    </canvas3D>
+        <OrbitControls enableDamping />
+    </Canvas3D>
 }

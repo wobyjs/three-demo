@@ -1,0 +1,1 @@
+{"version":3,"file":"FatLines.d.ts","sourceRoot":"","sources":["../../src/FatLines.tsx"],"names":[],"mappings":"AAAA,kCAAkC;AAGlC,OAAO,EAA0C,SAAS,EAA8C,MAAM,YAAY,CAAA;AAK1H,OAAO,gBAAgB,CAAA;AAuBvB,OAAO,CAAC,MAAM,CAAC;IACX,UAAU,GAAG,CAAC;QACV,UAAU,iBAAiB;YACvB,MAAM,EAAE,SAAS,CAAA;SACpB;KACJ;CACJ;AAwFD,eAAO,MAAM,QAAQ,WAiKpB,CAAA"}

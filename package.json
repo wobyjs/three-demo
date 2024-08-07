@@ -1,15 +1,47 @@
 {
   "name": "woby-three-demo",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Demo scripts for woby-three",
-  "main": "./dist/Appbar.es.js",
-  "module": "./dist/Appbar.es.js",
-  "types": "./dist/types/Appbar.d.ts",
+  "//main": "./dist/Appbar.es.js",
+  "//module": "./dist/Appbar.es.js",
+  "//types": "./dist/types/Appbar.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "//require": "./dist/index.cjs.js",
+      "import": "./dist/index.es.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./jsx-runtime": {
+      "//require": "./dist/jsx-runtime.cjs.js",
+      "import": "./dist/jsx-runtime.es.js",
+      "types": "./dist/types/jsx-runtime.d.ts"
+    },
+    "./jsx-dev-runtime": {
+      "//require": "./dist/jsx-runtime.cjs.js",
+      "import": "./dist/jsx-runtime.es.js",
+      "types": "./dist/types/runtime.d.ts"
+    }
+  },
   "scripts": {
-    "build": "vite build",
+    "git": "git add . && git commit -m \"Bump version\" && git push",
+    "bump": "pnpm version patch",
+    "npmjs": "pnpm publish",
+    "release": "run-s -c git bump npmjs",
+    "css:watch": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "css": "tailwindcss -i ./src/input.css -o ./dist/output.css",
+    "declaration": "tsc --build --force --declaration --emitDeclarationOnly --declarationMap  --verbose",
+    "declaration:watch": "tsc --build --force --declaration --emitDeclarationOnly --declarationMap  --verbose --watch",
+    "watch": "run-p build:watch css:watch",
+    "build": "run-s css build:vite css declaration",
+    "build:web": "vite build --config=vite.config.web.mts --force --mode production",
+    "web": "vite preview --config=vite.config.web.mts --host",
+    "dev:only": "vite --config=vite.config.web.mts --force --mode dev --host",
+    "dev": "run-p css:watch dev:only",
+    "build:vite": "vite build",
     "build:watch": "vite build --watch",
-    "dev": "vite --force --mode dev --host",
-    "prod": "vite --force"
+    "preview": "vite preview --host",
+    "hosting": "firebase deploy --only hosting"
   },
   "repository": {
     "type": "git",
@@ -25,15 +57,17 @@
   "devDependencies": {
     "@rollup/plugin-alias": "^5.0.0",
     "autoprefixer": "^10.4.15",
-    "vite": "^5.2.11",
-    "vite-plugin-dts": "^3.9.1"
+    "tailwindcss": "^3.4.4",
+    "vite": "^4.3.3",
+    "vite-plugin-dts": "^2.3.0",
+    "vite-plugin-static-copy": "^1.0.5"
   },
   "peerDependencies": {
-    "woby": "workspace:../woby",
     "woby-three": "../woby-three"
   },
   "dependencies": {
-    "@types/three": "^0.164.0",
-    "three": "^0.164.1"
+    "@types/three": "^0.167.1",
+    "three": "^0.167.1",
+    "woby": "workspace:../woby"
   }
 }
