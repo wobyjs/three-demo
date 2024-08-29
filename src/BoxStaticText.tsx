@@ -36,21 +36,22 @@ const Box = (props: MeshProps) => {
 const Test = () => {
     const material = new MeshBasicMaterial({ color: "black" })
     const parameters = {
+        // font: useLoaderAsync(FontLoader, { path: "fonts/helvetiker_regular.typeface.json" }),
         font: useLoader(FontLoader, { path: "fonts/helvetiker_regular.typeface.json" }),
         size: 1,
         depth: 0.1,
     }
 
     return <mesh material={material} >
-        {/** @ts-ignore */}
-        <textGeometry str={"abc"} parameters={parameters} />
+        <textGeometry text={"abc"} parameters={parameters} />
     </mesh>
 }
 export const BoxStaticText = () => {
     const clicked = $(false)
     const material = new MeshBasicMaterial({ color: "black" })
     const parameters = {
-        font: useLoader(FontLoader, { path: "fonts/helvetiker_regular.typeface.json" }),
+        // font: useLoaderAsync(FontLoader, { path: "fonts/helvetiker_regular.typeface.json" }), //promise only in constructor
+        font: useLoader(FontLoader, { path: "fonts/helvetiker_regular.typeface.json" }), // observable only in object properties
         size: 1,
         depth: 0.1,
     }

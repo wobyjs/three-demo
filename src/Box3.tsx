@@ -12,10 +12,15 @@ import { Canvas3D } from "woby-three/lib/components/Canvas3D"
 
 import "woby-three/src/lights/SpotLight"
 import "woby-three/src/lights/PointLight"
+import 'woby-three/src/geometries/BoxGeometry'
+import { useLoader } from "woby-three/lib/hooks/useLoader"
 
 const Box = (props: MeshProps) => {
     const ref = $<Mesh>()
     const texture = new TextureLoader().load('../textures/usedSteel.png')
+    // const texture = new TextureLoader().loadAsync('../textures/usedSteel.png')
+    // const texture = useLoader(TextureLoader, { path: '../textures/usedSteel.png' })
+
     const hovered = $(false)
     const clicked = $(false)
 

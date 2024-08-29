@@ -1,6 +1,6 @@
 /** @jsxImportSource woby-three */
 
-// import { Canvas3D, Three, useFrame, useLoader, defaults, consParams, objParams, useThree, useRenderer } from "woby-three"
+// import { Canvas3D, Three, useFrame, useLoader, defaults, consParams, objProps, useThree, useRenderer } from "woby-three"
 import { $, $$, type JSX } from "woby"
 
 import { LineMaterial } from 'woby-three/examples/jsm/lines/LineMaterial'
@@ -185,7 +185,7 @@ export const DLines = () => {
 }
 
 // consParams.lineGeometry = ['geometry', 'material']
-// objParams.lineGeometry = []
+// objProps.lineGeometry = []
 
 // console.log('LineGeometry')
 // //@ts-ignore

@@ -34,7 +34,7 @@ const config = defineConfig({
             // 'woby-three/jsx-dev-runtime': process.argv.includes('dev') ? path.resolve('../woby-three/src/jsx-runtime/jsx-runtime') : 'woby-three/jsx-dev-runtime',
             // 'woby-three/jsx-runtime': process.argv.includes('dev') ? path.resolve('../woby-three/dist/jsx-runtime/jsx-runtime') : 'woby-three/jsx-runtime',
             // 'woby-three/jsx-runtime': process.argv.includes('dev') ? path.resolve('../woby-three/src/jsx/runtime'): 'woby-three/jsx-runtime',
-            'woby-three/jsx-runtime': path.resolve('../woby-three/lib/jsx/runtime.js'),
+            'woby-three/jsx-runtime': path.resolve('../woby-three/lib/jsx/runtime'),
             // 'woby/jsx-runtime': path.resolve('../woby/src/jsx/runtime'),
             // 'woby-three/dist/types/jsx-runtime/jsx-runtime': 'woby-three/dist/types/jsx-runtime/jsx-dev-runtime',
             'woby/jsx-runtime':/*  process.argv.includes('dev') ? */ path.resolve('../woby/src/jsx/runtime'), // : 'woby/jsx-runtime',
