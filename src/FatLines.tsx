@@ -11,10 +11,10 @@ import { LineMaterial } from 'woby-three/examples/jsm/lines/LineMaterial'
 import { Stats } from 'woby-three/examples/jsm//libs/stats.module';
 import { GPUStatsPanel } from 'woby-three/examples/jsm/utils/GPUStatsPanel';
 import { OrbitControls } from 'woby-three/lib/examples/jsm/controls/OrbitControls'
-import { Line, LineProps } from 'woby-three/src/objects/Line'
-import { useCamera } from 'woby-three/lib/hooks/useCamera'
+import { Line } from 'woby-three/src/objects/Line'
+import { useCameras } from 'woby-three/lib/hooks/useCamera'
 import { useThree } from 'woby-three/lib/hooks/useThree'
-import { useRenderer } from 'woby-three/lib/hooks/useRenderer'
+import { useRenderers } from 'woby-three/lib/hooks/useRenderer'
 import { useFrame } from 'woby-three/lib/hooks/useFrame'
 import { Canvas3D } from 'woby-three/lib/components/Canvas3D'
 import { PerspectiveCamera } from 'woby-three/src/cameras/PerspectiveCamera'
@@ -23,31 +23,23 @@ import { Vector3 } from "woby-three/src/math/Vector3"
 import { Float32BufferAttribute } from "woby-three/src/core/Float32BufferAttribute"
 import { CatmullRomCurve3 } from "woby-three/src/extras/curves/CatmullRomCurve3"
 import { Color } from "woby-three/src/math/Color"
-import { BufferGeometry } from "woby-three/src/core/BufferGeometry"
-import { NormalBufferAttributes } from "woby-three/src/core/BufferGeometry"
 import { SRGBColorSpace } from "woby-three/src/constants"
+import { useScenes } from 'woby-three/lib/hooks/useScene'
 
 import 'woby-three/examples/jsm/lines/LineGeometry'
 import 'woby-three/examples/jsm/libs/lil-gui.module.min'
 import "woby-three/src/renderers/WebGLRenderer"
 import 'woby-three/examples/jsm/lines/Line2'
+import 'woby-three/src/objects/Line'
 import 'woby-three/examples/jsm/lines/LineMaterial'
+import 'woby-three/src/materials/LineBasicMaterial'
 
 //https://threejs.org/examples/?q=line#webgl_lines_fat
 
-
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            line22: LineProps
-        }
-    }
-}
-
 const Panel = () => {
-    const { scene } = useThree()
-    const camera = useCamera<PerspectiveCamera>()
-    const renderer = useRenderer<WebGLRenderer>()
+    const { scenes } = useThree()
+    const cameras = useCameras()
+    const renderers = useRenderers()
 
     // $$(renderer).setPixelRatio(window.devicePixelRatio)
     // $$(renderer).setSize(window.innerWidth, window.innerHeight)
@@ -62,20 +54,26 @@ const Panel = () => {
     let insetWidth
     let insetHeight
 
-    useEffect(() => {
-        const r = $$(renderer)
-        if (!r) return null
-        if (!$$(camera)) return null
+    //@ts-ignore
+    useEffect(() => console.log(window.scene = $$(useScenes())?.[0]))
 
-        camera2.position.copy($$(camera).position)
+
+    useEffect(() => {
+        const r = $$(renderers)[0] as any as WebGLRenderer
+        const camera = $$(cameras)[0] as PerspectiveCamera
+        if (!r) return null
+
+        if (!camera) return null
+
+        camera2.position.copy(camera.position)
 
         gpuPanel = new GPUStatsPanel(r.getContext())
         stats.addPanel(gpuPanel)
         stats.showPanel(0)
 
         function onWindowResize() {
-            $$(camera).aspect = window.innerWidth / window.innerHeight;
-            $$(camera).updateProjectionMatrix();
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
 
             r.setSize(window.innerWidth, window.innerHeight);
 
@@ -95,16 +93,19 @@ const Panel = () => {
 
 
     useFrame(() => {
-        const r = $$(renderer)
+        const r = $$(renderers)[0] as any as WebGLRenderer
+        const camera = $$(cameras)[0]
+        const scene = $$(scenes)[0]
+
         if (!r) return
-        if (!$$(scene)) return
-        if (!$$(camera)) return
+        if (!$$(scenes)) return
+        if (!camera) return
 
         r.setClearColor(0x000000, 0)
         r.setViewport(0, 0, window.innerWidth, window.innerHeight)
 
         gpuPanel?.startQuery()
-        r.render($$(scene), $$(camera))
+        r.render(scene, camera)
         gpuPanel?.endQuery()
 
         r.setClearColor(0x222222, 1)
@@ -117,10 +118,10 @@ const Panel = () => {
 
         r.setViewport(20, 20, insetWidth, insetHeight)
 
-        camera2.position.copy($$(camera).position)
-        camera2.quaternion.copy($$(camera).quaternion)
+        camera2.position.copy(camera.position)
+        camera2.quaternion.copy(camera.quaternion)
 
-        r.render($$(scene) as any, camera2)
+        r.render(scene as any, camera2)
 
         r.setScissorTest(false)
 
@@ -155,7 +156,6 @@ export const FatLines = () => {
 
     }
 
-    const bf = $<BufferGeometry<NormalBufferAttributes>>()
     const l2 = $<Line2>()
     const matLine = $<LineMaterial>()
     const g = $<GUI>()
@@ -248,47 +248,49 @@ export const FatLines = () => {
 
         // })
     })
-    useEffect(() => {
-        if (!$$(bf)) return
 
-        $$(bf).setAttribute('position', new Float32BufferAttribute(positions, 3))
-        $$(bf).setAttribute('color', new Float32BufferAttribute(colors, 3))
-    })
 
     // useEffect(()=>{
     //     if(!$$(l2))return
     //     $$(l2).computeLineDistances()
     // })
 
-    return <Canvas3D noRender background={0x222222} /* camera={new PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 1000)} */
+    return <Canvas3D  /* camera={new PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 1000)} */
     // renderer={new three.WebGLRenderer({ antialias: true })}
     >
-        <gui ref={g} />
-        <webglRenderer antialias setPixelRatio={[window.devicePixelRatio]} setSize={[window.innerWidth, window.innerHeight]} setClearColor={[0x000000, 0.0]} />
-        <perspectiveCamera fov={40} aspect={window.innerWidth / window.innerHeight} near={1} far={1000} position={[-40, 0, 60]} />
-        <Panel />
-        <ambientLight intensity={0.5} />
-        <OrbitControls minDistance={10} maxDistance={500} enableDamping />
+        <webglRenderer antialias setPixelRatio={[window.devicePixelRatio]} setSize={[window.innerWidth, window.innerHeight]}>
+            <scene background={new Color(0x222222)}>
+                <gui ref={g} />
+                <webglRenderer antialias setPixelRatio={[window.devicePixelRatio]} setSize={[window.innerWidth, window.innerHeight]} setClearColor={[0x000000, 0.0]} />
+                <perspectiveCamera fov={40} aspect={window.innerWidth / window.innerHeight} near={1} far={1000} position={[-40, 0, 60]} />
+                <Panel />
+                <ambientLight intensity={0.5} />
+                <OrbitControls minDistance={10} maxDistance={500} enableDamping />
 
-        <line2 ref={l2} scale={[1, 1, 1]}
-            visible={isLineGeometry}
-        // onClick={() => console.log('canvas clicked')}
-        >
-            <lineGeometry setPositions={[positions]} setColors={[colors]} />
-            {/* line.computeLineDistances() */}
-            <lineMaterial ref={matLine} color={0xffffff}
-                linewidth={10} // in world units with size attenuation, pixels otherwise
-                vertexColors={true}
-                dashed={false}
-                alphaToCoverage={false} />
-        </line2>
+                {/* LineGeometry */}
+                <line2 ref={l2} scale={[1, 1, 1]}
+                    visible={() => $$(isLineGeometry)}
+                // onClick={() => console.log('canvas clicked')}
+                >
+                    <lineGeometry setPositions={[positions]} setColors={[colors]} />
+                    <lineMaterial ref={matLine} color={0xffffff}
+                        linewidth={10} // in world units with size attenuation, pixels otherwise
+                        vertexColors={true}
+                        dashed={false}
+                        alphaToCoverage={false} />
+                </line2>
 
-        {/* matLineDashed = new THREE.LineDashedMaterial( {vertexColors: true, scale: 2, dashSize: 1, gapSize: 1 } ) */}
+                {/* matLineDashed = new THREE.LineDashedMaterial( {vertexColors: true, scale: 2, dashSize: 1, gapSize: 1 } ) */}
 
-        <line ref={l1} visibility={() => !$$(isLineGeometry) as any}>
-            <bufferGeometry ref={bf} /* points={new three.Float32BufferAttribute(positions, 3) as any} */ />
-            {/* <bufferGeometry ref={bf} points={positions} /> */}
-            <lineBasicMaterial vertexColors={true} />
-        </line>
+                {/* gl.Line */}
+                <line ref={l1} visible={() => !$$(isLineGeometry) as any}>
+                    <bufferGeometry setAttribute={[['position', new Float32BufferAttribute(positions, 3)], ['color', new Float32BufferAttribute(colors, 3)]]} /* points={new three.Float32BufferAttribute(positions, 3) as any} */ />
+                    {/* <bufferGeometry ref={bf} points={positions} /> */}
+                    <lineBasicMaterial vertexColors={true} />
+                </line>
+            </scene>
+        </webglRenderer>
     </Canvas3D >
 }
+
+

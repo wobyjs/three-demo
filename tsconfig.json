@@ -75,6 +75,7 @@
         "vite.config.*ts",
         "vite.config.*.*ts",
         "dist",
+        "src/dump",
         "dist*",
         "src1"
     ]

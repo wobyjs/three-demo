@@ -10,15 +10,15 @@ import 'woby-three/src/geometries/IcosahedronGeometry'
 import { OrbitControls } from "woby-three/lib/examples/jsm/controls/OrbitControls"
 import { TextureLoader } from "woby-three/src/loaders/TextureLoader"
 import { useFrame } from "woby-three/lib/hooks/useFrame"
-import { useRenderer } from "woby-three/lib/hooks/useRenderer"
+import { useRenderers } from "woby-three/lib/hooks/useRenderer"
 import { WebGLRenderer } from "woby-three/src/renderers/WebGLRenderer"
-import { useScene } from "woby-three/lib/hooks/useScene"
-import { useCamera } from "woby-three/lib/hooks/useCamera"
+import { useScenes } from "woby-three/lib/hooks/useScene"
+import { useCameras } from "woby-three/lib/hooks/useCamera"
 import { Color } from "woby-three/src/math/Color"
 import { BoxGeometry } from "woby-three/src/geometries/BoxGeometry"
 import { MeshPhongMaterial } from "woby-three/src/materials/MeshPhongMaterial"
 import { BackSide } from "woby-three/src/constants"
-import { Canvas3D } from "woby-three/lib/components/Canvas3D"
+import { Canvas3D, toColor } from "woby-three/lib/components/Canvas3D"
 
 
 function Box(props: MeshProps) {
@@ -31,12 +31,12 @@ function Box(props: MeshProps) {
     // Subscribe this component to the render-loop, rotate the mesh every frame
     useFrame(() => $$(ref)?.rotateX(0.01))
 
-    const scene = useScene()
-    const renderer = useRenderer<WebGLRenderer>()
-    const camera = useCamera()
+    const scene = useScenes()
+    const renderer = useRenderers/* <WebGLRenderer> */()
+    const camera = useCameras()
 
-    $$(renderer).shadowMap.enabled = true
-    $$(scene).background = new Color("grey")
+    $$(renderer)[0].shadowMap.enabled = true
+    $$(scene)[0].background = new Color("grey")
 
 
     useEffect(() => {
@@ -59,7 +59,7 @@ function Box(props: MeshProps) {
     const label = new CSS2DObject(div)
     label.position.set(0, 2, 0)
     label.center.set(0, 0)
-    $$(scene).add(label)
+    $$(scene)[0].add(label)
 
 
     const textRenderer = new CSS2DRenderer()
@@ -72,7 +72,7 @@ function Box(props: MeshProps) {
     document.body.addEventListener("pointerdown", (e: PointerEvent) => {
         if (e.target == textRenderer.domElement) {
             const myEvent = new PointerEvent('pointerdown', e)
-            $$(renderer).domElement.dispatchEvent(myEvent)
+            $$(renderer)[0].domElement.dispatchEvent(myEvent)
         }
         else {
             (e.target as HTMLElement).click()
@@ -83,14 +83,14 @@ function Box(props: MeshProps) {
     document.body.addEventListener('pointermove', (e) => {
         if (e.target == textRenderer.domElement) {
             const myEvent = new PointerEvent('pointermove', e)
-            $$(renderer).domElement.dispatchEvent(myEvent)
+            $$(renderer)[0].domElement.dispatchEvent(myEvent)
         }
         else
             (e.target as HTMLElement).click()
     })
 
     useFrame(() => {
-        textRenderer.render($$(scene), $$(camera))
+        textRenderer.render($$(scene)[0], $$(camera)[0])
     })
 
     // Return the view, these are regular Threejs elements expressed in JSX
@@ -98,7 +98,8 @@ function Box(props: MeshProps) {
         // {...props}
         ref={ref}
 
-        scale={() => $$(clicked) ? [1.5, 1.5, 1.5] : [1, 1, 1]}>
+    // scale={() => $$(clicked) ? [1.5, 1.5, 1.5] : [1, 1, 1]}
+    >
         <wireframeGeometry2>
             <icosahedronGeometry args={[20, 1]} />
         </wireframeGeometry2>
@@ -121,14 +122,18 @@ export function Line() {
     })
 
     return <Canvas3D>
-        <ambientLight intensity={0.5} />
-        <spotLight position={[0, 0, 0]} angle={0.15} penumbra={1} />
-        <pointLight position={[0, 5, 0]} intensity={10} castShadow shadow-camera-far={333} shadow-camera-near={0.1} />
-        <Box position={[0, 1, 0]} onClick={(event) => console.log("box clicked")} />
-        {/* {useMemo(() => visible() ? box : null)} */}
-        {/* <Box position={[-2, 0.8, 0]} castShadow /> */}
-        {/* <mesh geometry={cubeGeo} material={cubeMat} position={[0, cubeSize / 2 - 0.1, 0]} receiveShadow /> */}
-
+        <webglRenderer antialias setPixelRatio={[window.devicePixelRatio]} setSize={[window.innerWidth, window.innerHeight]}>
+            <scene background={toColor('white')}>
+                <ambientLight intensity={0.5} />
+                <spotLight position={[0, 0, 0]} angle={0.15} penumbra={1} />
+                <pointLight position={[0, 5, 0]} intensity={10} castShadow shadow-camera-far={333} shadow-camera-near={0.1} />
+                <Box position={[0, 1, 0]} onClick={(event) => console.log("box clicked")} />
+                {/* {useMemo(() => visible() ? box : null)} */}
+                {/* <Box position={[-2, 0.8, 0]} castShadow /> */}
+                {/* <mesh geometry={cubeGeo} material={cubeMat} position={[0, cubeSize / 2 - 0.1, 0]} receiveShadow /> */}
+            </scene>
+        </webglRenderer>
+        <perspectiveCamera position={[0, 0, 5]} />
         <OrbitControls enableDamping />
     </Canvas3D>
 }
