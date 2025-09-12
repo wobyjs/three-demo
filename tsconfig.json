@@ -13,7 +13,7 @@
         "inlineSources": false,
         // "isolatedModules": true,
         "jsx": "preserve",
-        "jsxImportSource": "woby",
+        "jsxImportSource": "woby-three",
         "lib": [
             "dom",
             "esnext"
@@ -46,23 +46,6 @@
         "baseUrl": ".",
         "rootDir": "./",
         "composite": true,
-        "paths": {
-            "woby/*": [
-                "./node_modules/woby/*"
-            ],
-            "woby/jsx-runtime": [
-                "./node_modules/woby/dist/types/jsx/runtime"
-            ],
-            "woby/jsx-runtime/*": [
-                "./node_modules/woby/dist/types/jsx/runtime/*"
-            ],
-            "woby-three/jsx-runtime": [
-                "./node_modules/woby-three/dist/jsx-runtime"
-            ],
-            "woby-three/jsx-runtime/*": [
-                "./node_modules/woby-three/dist/jsx-runtime*"
-            ],
-        }
     },
     // "references": [
     //     {

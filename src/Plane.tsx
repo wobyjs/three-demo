@@ -13,13 +13,16 @@ import "@woby/three/src/lights/AmbientLight"
 import "@woby/three/src/lights/SpotLight"
 import "@woby/three/src/lights/PointLight"
 import '@woby/three/src/geometries/BoxGeometry'
+import '@woby/three/src/geometries/PlaneGeometry'
 import '@woby/three/src/materials/MeshStandardMaterial'
 import '@woby/three/src/objects/Mesh'
 import '@woby/three/src/scenes/Scene'
 import '@woby/three/src/renderers/WebGLRenderer'
 import "@woby/three/src/cameras/PerspectiveCamera"
+import { DoubleSide } from "three/src/constants"
+import { useLoader } from '@woby/three/lib/hooks/useLoader'
 
-const Box = (props: MeshProps) => {
+const Plane = (props: MeshProps) => {
     const texture = new TextureLoader().load('../textures/usedSteel.png')
     // const texture = new TextureLoader().loadAsync('../textures/usedSteel.png')
     // const texture = useLoader(TextureLoader, { path: '../textures/usedSteel.png' })
@@ -35,24 +38,25 @@ const Box = (props: MeshProps) => {
         // onClick={(event) => clicked(!clicked())}
         onPointerOver={() => hovered(true)}
         onPointerOut={() => hovered(false)}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={() => $$(hovered) ? 'hotpink' : 'orange'} map={texture} />
+        <planeGeometry args={[1, 1]} />
+        <meshStandardMaterial color={() => $$(hovered) ? 'hotpink' : 'orange'} map={texture}
+            side={DoubleSide} />
     </mesh>
 }
 
-export const Box3 = () => {
+export const Plane3 = () => {
     const visible = $(false)
-    const box = <Box position={[0, 1, 0]} />
+    const box = <Plane position={[0, 1, 0]} />
     return <Canvas3D>
         <webglRenderer antialias setPixelRatio={[window.devicePixelRatio]} setSize={[window.innerWidth, window.innerHeight]} />
         <scene background={toColor('white')}>
             <ambientLight intensity={1} />
             <spotLight position={[0, 1, 0]} angle={10} penumbra={1} />
             <pointLight position={[0, 1, 0]} />
-            <Box position={[-1.2, 0, 0]} onClick={() => { visible(!$$(visible)); console.log($$(visible)) }} />
-            {/* <Box position={[0, 1, 0]} visible={() => $(visible) ? true : false} /> */}
-            {() => $(visible) ? box : null}
-            <Box position={[1.2, 0, 0]} />
+            <Plane position={[-1.2, 0, 0]} onClick={() => { visible(!$$(visible)); console.log($$(visible)) }} />
+            {/* <Box position={[0, 1, 0]} visible={() => $$(visible) ? true : false} /> */}
+            {() => $$(visible) ? box : null}
+            <Plane position={[1.2, 0, 0]} />
         </scene>
         <perspectiveCamera position={[0, 0, 5]} />
         <OrbitControls enableDamping />

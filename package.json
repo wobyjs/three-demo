@@ -1,6 +1,9 @@
 {
-  "name": "woby-three-demo",
+  "name": "@woby/three-demo",
   "version": "1.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Demo scripts for woby-three",
   "//main": "./dist/Appbar.es.js",
   "//module": "./dist/Appbar.es.js",
@@ -28,12 +31,12 @@
     "bump": "pnpm version patch",
     "npmjs": "pnpm publish",
     "release": "run-s -c git bump npmjs",
-    "css:watch": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
-    "css": "tailwindcss -i ./src/input.css -o ./dist/output.css",
+    "css:watch": "tailwindcss -i ./src/input.css -o ./public/output.css --watch",
+    "css11": "tailwindcss -i ./src/input.css -o ./public/output.css",
     "declaration": "tsc --build --force --declaration --emitDeclarationOnly --declarationMap  --verbose",
     "declaration:watch": "tsc --build --force --declaration --emitDeclarationOnly --declarationMap  --verbose --watch",
     "watch": "run-p build:watch css:watch",
-    "build": "run-s css build:vite css declaration",
+    "build": "run-s build:vite declaration",
     "build:web": "vite build --config=vite.config.web.mts --force --mode production",
     "web": "vite preview --config=vite.config.web.mts --host",
     "dev:only": "vite --config=vite.config.web.mts --force --mode dev --host",
@@ -55,20 +58,20 @@
   "author": "Tan Jee Han",
   "license": "MIT",
   "devDependencies": {
-    "@rollup/plugin-alias": "^5.0.0",
+    "@rollup/plugin-alias": "^5.1.1",
     "autoprefixer": "^10.4.20",
-    "tailwindcss": "^3.4.10",
-    "vite": "^5.4.3",
-    "vite-plugin-dts": "^4.1.0",
-    "vite-plugin-static-copy": "^1.0.6",
-    "vite-tsconfig-paths": "^5.0.1"
-  },
-  "peerDependencies": {
-    "woby-three": "../woby-three"
+    "tailwindcss": "^4.0.17",
+    "@tailwindcss/vite": "^4.0.6",
+    "vite": "^6.1.0",
+    "vite-plugin-dts": "^4.5.0",
+    "vite-plugin-static-copy": "^2.2.0",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
-    "@types/three": "^0.168.0",
-    "three": "^0.168.0",
-    "woby": "workspace:../woby"
+    "@types/three": "^0.173.0",
+    "three": "^0.173.0",
+    "@woby/use": "workspace:../use",
+    "woby": "workspace:../woby",
+    "@woby/three": "workspace:../three"
   }
 }

@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import path from 'path'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import tailwindcss from '@tailwindcss/vite'
 
 // import dts from 'vite-plugin-dts'
 
@@ -29,33 +30,19 @@ const config = defineConfig({
                     dest: './'
                 }
             ]
-        })
+        }),
+        tailwindcss(),
     ],
     resolve: {
         alias: {
-            // 'woby-three/jsx-dev-runtime': process.argv.includes('dev') ? path.resolve('../woby-three/src/jsx-runtime/jsx-runtime') : 'woby-three/jsx-dev-runtime',
-            // 'woby-three/jsx-runtime': process.argv.includes('dev') ? path.resolve('../woby-three/code/lib/jsx/runtime') : 'woby-three/jsx-runtime',
-
-            // 'woby-three/jsx-runtime': process.argv.includes('dev') ? path.resolve('../woby-three/src/jsx/runtime'): 'woby-three/jsx-runtime',
-            'woby-three/jsx-runtime': path.resolve('../woby-three/code/lib/jsx/runtime'),
-            'woby-three/jsx-dev-runtime': path.resolve('../woby-three/code/lib/jsx/runtime'),
-            'woby-three/src': path.resolve('../woby-three/code/src'),
-            'woby-three/lib': path.resolve('../woby-three/code/lib'),
-            'woby-three/examples/jsm': path.resolve('../woby-three/code/examples/jsm'),
-            // 'woby/jsx-runtime': path.resolve('../woby/src/jsx/runtime'),
-            // 'woby-three/dist/types/jsx-runtime/jsx-runtime': 'woby-three/dist/types/jsx-runtime/jsx-dev-runtime',
-            // 'woby/jsx-runtime':/*  process.argv.includes('dev') ? */ path.resolve('../woby/src/jsx/runtime'), // : 'woby/jsx-runtime',
-            'woby/jsx-runtime':/*  process.argv.includes('dev') ? */ path.resolve('../woby/src/jsx/runtime'), // : 'woby/jsx-runtime',
-            'woby/jsx-dev-runtime':/*  process.argv.includes('dev') ? */ path.resolve('../woby/src/jsx/runtime'), // : 'woby/jsx-runtime',
-            'woby': path.resolve('../woby/src/index'),
-
-            // 'woby': process.argv.includes('dev') ? path.resolve('../woby/src/index') : 'woby/jsx-runtime',
-            // 'woby': path.resolve('../woby/src/index'),
-            // 'oby': path.resolve('../oby/src'),
-            // 'oby/~/methods': path.resolve('../oby/src/methods'),
-            // 'three/addons': 'three/examples/jsm',
-            // 'three/tsl': 'three/webgpu',
-            // 'three': 'three/webgpu',
+            '@woby/three/jsx-runtime': path.resolve('../three/lib/jsx/jsx-runtime.js'),
+            '@woby/three/jsx-dev-runtime': path.resolve('../three/lib/jsx/jsx-dev-runtime.js'),
+            '@woby/three/src': path.resolve('../three/src'),
+            '@woby/three/lib': path.resolve('../three/lib'),
+            '@woby/three/examples/jsm': path.resolve('../three/examples/jsm'),
+            'woby/jsx-runtime': process.argv.includes('dev') ? path.resolve('../woby/src/jsx/runtime') : 'woby',
+            'woby/jsx-dev-runtime': process.argv.includes('dev') ? path.resolve('../woby/src/jsx/runtime') : 'woby',
+            'woby': process.argv.includes('dev') ? path.resolve('../woby/src/index') : 'woby',
         },
     },
 })
