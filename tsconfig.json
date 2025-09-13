@@ -13,7 +13,7 @@
         "inlineSources": false,
         // "isolatedModules": true,
         "jsx": "preserve",
-        "jsxImportSource": "woby-three",
+        "jsxImportSource": "@woby/three",
         "lib": [
             "dom",
             "esnext"

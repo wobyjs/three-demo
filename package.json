@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "Demo scripts for woby-three",
+  "description": "Demo scripts for @woby/three",
   "//main": "./dist/Appbar.es.js",
   "//module": "./dist/Appbar.es.js",
   "//types": "./dist/types/Appbar.d.ts",
