@@ -8,7 +8,7 @@ const config = defineConfig({
         minify: false,
         lib: {
             entry: ["./index.html", './css3d.html', './css3d_webgl.html', './gltf_anisotropy.html'],
-            name: "test",
+            name: "@woby/three-demo",
             formats: ['es'],
             fileName: (format: string, entryName: string) => `${entryName}.${format}.js`
         },
